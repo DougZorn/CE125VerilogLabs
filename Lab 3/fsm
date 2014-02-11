@@ -1,5 +1,28 @@
-//fsm.
+//fsm
 module fsm(
+//INPUT SIGNALS
+//module clock gen
+input clock_i,		
+//module test bench
+input reset_n_i,  
+input [2:0] vcount_northbound_i,
+input [2:0] vcount_southbound_i,
+input [2:0] vcount_eastbound_i,
+input [2:0] vcount_westbound_i,
+input ped_button_ns_i,
+input ped_button_ew_i,
+input test_mode_i,
+//OUTPUT SIGNALS
+//North and South Lights
+output reg green_northsouth_o,  //high on reset
+output reg red_northsouth_o,    //low on reset 
+output reg yellow_northsouth_o, //low on reset
+//East and West Lights
+output reg green_eastwest_o,  //low on reset
+output reg red_eastwest_o,    //low on reset 
+output reg yellow_eastwest_o, //low on reset
+//Northbound green count
+output reg transition_count_o
 
 );
 
