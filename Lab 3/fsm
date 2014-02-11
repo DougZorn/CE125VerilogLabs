@@ -2,28 +2,84 @@
 module fsm(
 //INPUT SIGNALS
 //module clock gen
-input clock_i,		
+  input clock_i,
 //module test bench
-input reset_n_i,  
-input [2:0] vcount_northbound_i,
-input [2:0] vcount_southbound_i,
-input [2:0] vcount_eastbound_i,
-input [2:0] vcount_westbound_i,
-input ped_button_ns_i,
-input ped_button_ew_i,
-input test_mode_i,
+  input reset_n_i,
+  input [2:0] vcount_northbound_i,
+  input [2:0] vcount_southbound_i,
+  input [2:0] vcount_eastbound_i,
+  input [2:0] vcount_westbound_i,
+  input ped_button_ns_i,
+  input ped_button_ew_i,
+  input test_mode_i,
 //OUTPUT SIGNALS
 //North and South Lights
-output reg green_northsouth_o,  //high on reset
-output reg red_northsouth_o,    //low on reset 
-output reg yellow_northsouth_o, //low on reset
+  output reg green_northsouth_o, //high on reset
+  output reg red_northsouth_o, //low on reset
+  output reg yellow_northsouth_o, //low on reset
 //East and West Lights
-output reg green_eastwest_o,  //low on reset
-output reg red_eastwest_o,    //low on reset 
-output reg yellow_eastwest_o, //low on reset
+  output reg green_eastwest_o, //low on reset
+  output reg red_eastwest_o, //low on reset
+  output reg yellow_eastwest_o, //low on reset
 //Northbound green count
-output reg transition_count_o
-
+  output reg [15:0] transition_count_o
 );
 
+  localparam [2:0] ns_green_ew_red = 3'd0,  //Green light for NS and Red light for EW
+                   ped_es = 3'd1,           //ES pedestrian signal
+                   ns_yellow = 3'd2,        //Yellow light for NS
+                   red_delay_ns = 3'd3,     //Red light with one second delay
+                   ew_green_ns_red = 3'd4,  //Green light for EW and Red light for NS
+                   ped_ns = 3'd5,           //NS pedestrian signal
+                   ew_yellow = 3'd6,        //Yellow light for EW
+                   red_delay_ew = 3'd7;     //Red light with one second delay
+                    
+
+  reg [7:0] state;
+  reg [7:0] next_state;
+  
+  //reg [2:0] car_count_ns = vcount_northbound_i + vcount_southbound_i; //this needs to be reset and not driven by two different drivers
+  /*
+  reg [2:0] car_count_ns;
+  reg [2:0] car_count_ew;
+  reg [16:0] two_minute_timer;  
+  
+  
+  */
+  
+  always@(*)
+    begin
+      next_state = 8'b0000_0000;
+      case(1'b1) // synthesis parallel_case
+        state[ns_green_ew_red]: next_state[];     
+        state[ped_es]:;
+        state[ns_yellow]:;
+        state[red_delay_ns]:;
+        state[ew_green_ns_red]:;
+        state[ped_ns]:;
+        state[ew_yellow]:;
+        state[red_delay_ew]:;     
+      endcase 
+    end // always
+    
+  always@(posedge clock_i)
+    if(reset_n_i)
+      begin
+        state <= 8'b0000_0001;
+        green_northsouth_o <= 1'b1;
+        red_northsouth_o <= 1'b0;
+        yellow_northsouth_o <= 1'b0;   
+        green_eastwest_o <= 1'b0;   
+        red_eastwest_o <= 1'b0;
+        yellow_eastwest_o <= 1'b0;
+        transition_count_o[15:0] <=16'h0000;
+      end      
+    else
+      begin
+        state <= next_state;
+      end
+      
 endmodule
+
+
+
