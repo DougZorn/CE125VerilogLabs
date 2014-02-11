@@ -1,0 +1,6 @@
+//fsm.
+module fsm(
+
+);
+
+endmodule
