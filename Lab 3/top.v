@@ -21,7 +21,7 @@ wire [15:0] transition_count_w;
 
 clock_gen #(.CLOCK_PERIOD(1000)) clock_gen_0 (.clock_i(clock_w));
 
-test_bench test_bench_0 (.clock_i(),
+test_bench test_bench_0 (.clock_i(clock_w),
 												 .reset_n_o(reset_n_w),
 												 .vcount_northbound_o(vcount_northbound_w),
            							 .vcount_southbound_o(vcount_southbound_w),

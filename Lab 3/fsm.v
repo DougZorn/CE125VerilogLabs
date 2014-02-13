@@ -1,3 +1,4 @@
+`timescale 1us/100ns
 //fsm
 module fsm(
 //INPUT SIGNALS 

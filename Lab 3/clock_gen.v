@@ -1,3 +1,4 @@
+`timescale 1us/100ns
 module clock_gen #(parameter CLOCK_PERIOD = 1000)
 (output reg clock_i);
 
