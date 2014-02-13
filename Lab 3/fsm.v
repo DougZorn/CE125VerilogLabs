@@ -46,28 +46,52 @@ module fsm(
   reg [16:0] two_minute_30_second_timer;
   reg [10:0] two_second_one_second_yellow_delay;   
   
-  
+	reg [16:0] delay_two_17;
+	reg [16:0] delay_thirty_17;
+  reg [10:0] delay_two_11;
+	reg [10:0] delay_three_11;
+
+
+	always@(*)
+		begin
+			if(test_mode_i)
+				begin
+					delay_two_17 = 17'd1_200;
+					delay_thirty_17 = 17'd300;
+  				delay_two_11 = 11'd20;
+					delay_three_11 = 11'd30;
+				end
+			else //if
+				begin
+					delay_two_17 = 17'd120_000;
+					delay_thirty_17 = 17'd30_000;
+  				delay_two_11 = 11'd2_000;
+					delay_three_11 = 11'd3_000;
+				end //else
+		end //always
+
   always@(*)
     begin
+			//if(test_mode_i);
       next_state = 8'b0000_0000; //I don't think this needs to be reset since it is a combinational block that executes sequentially but it is a reg, soooo...
       case(1'b1) // synthesis parallel_case
-        state[ns_green_ew_red]: if((two_minute_30_second_timer >= 16'd120_000) | (car_count_ew >= 3'd6)) next_state[ns_yellow] = 1'b1;
+        state[ns_green_ew_red]: if((two_minute_30_second_timer >= delay_two_17) | (car_count_ew >= 3'd6)) next_state[ns_yellow] = 1'b1;
                                   else if (ped_button_ew_i == 1'b1) next_state[ped_ew] = 1'b1; //you may need to investigate this further due to how the pedestrian pulse works/ how long it lasts
                                     else next_state[ns_green_ew_red] = 1'b1;  
-        state[ped_ew]: if ((two_minute_30_second_timer >= 16'd30_000) | (car_count_ew >= 3'd6)) next_state[ns_yellow] = 1'b1;
+        state[ped_ew]: if ((two_minute_30_second_timer >= delay_thirty_17) | (car_count_ew >= 3'd6)) next_state[ns_yellow] = 1'b1;
                         else next_state[ped_ew] = 1'b1;
-        state[ns_yellow]: if(two_second_one_second_yellow_delay >= 11'd2000) next_state[red_delay_ns] = 1'b1;
+        state[ns_yellow]: if(two_second_one_second_yellow_delay >= delay_two_11) next_state[red_delay_ns] = 1'b1;
                             else next_state[ns_yellow] = 1'b1;
-        state[red_delay_ns]: if(two_second_one_second_yellow_delay >= 11'd3000) next_state[ew_green_ns_red] = 1'b1;
+        state[red_delay_ns]: if(two_second_one_second_yellow_delay >= delay_three_11) next_state[ew_green_ns_red] = 1'b1;
                               else next_state[red_delay_ns] =1'b1;
-        state[ew_green_ns_red]: if ((two_minute_30_second_timer >= 16'd30_000) | (car_count_ns >= 3'd6)) next_state[ew_yellow] = 1'b1;
+        state[ew_green_ns_red]: if ((two_minute_30_second_timer >= delay_thirty_17) | (car_count_ns >= 3'd6)) next_state[ew_yellow] = 1'b1;
                                   else if (ped_button_ns_i == 1'b1) next_state[ped_ns] = 1'b1; //you may need to investigate this further due to how the pedestrian pulse works/ how long it lasts
                                     else next_state[ew_yellow] = 1'b1; 
-        state[ped_ns]: if ((two_minute_30_second_timer >= 16'd30_000) | (car_count_ns >= 3'd6)) next_state[ew_yellow] = 1'b1;
+        state[ped_ns]: if ((two_minute_30_second_timer >= delay_thirty_17) | (car_count_ns >= 3'd6)) next_state[ew_yellow] = 1'b1;
                         else next_state[ped_ns] = 1'b1;
-        state[ew_yellow]: if(two_second_one_second_yellow_delay >= 11'd2000) next_state[red_delay_ew] = 1'b1;
+        state[ew_yellow]: if(two_second_one_second_yellow_delay >= delay_two_11) next_state[red_delay_ew] = 1'b1;
                             else next_state[ew_yellow] = 1'b1;
-        state[red_delay_ew]: if(two_second_one_second_yellow_delay >= 11'd3000) next_state[ns_green_ew_red] = 1'b1;
+        state[red_delay_ew]: if(two_second_one_second_yellow_delay >= delay_three_11) next_state[ns_green_ew_red] = 1'b1;
                               else next_state[red_delay_ew] = 1'b1;     
       endcase 
     end // always
