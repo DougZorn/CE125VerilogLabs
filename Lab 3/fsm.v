@@ -1,6 +1,6 @@
 //fsm
 module fsm(
-//INPUT SIGNALS
+//INPUT SIGNALS 
 //signal comes from module clock_gen
   input clock_i,
 //Signals come from module test_bench
@@ -12,7 +12,7 @@ module fsm(
   input ped_button_ns_i,
   input ped_button_ew_i,
   input test_mode_i,
-//OUTPUT SIGNALS
+//OUTPUT SIGNALS to test_bench
 //North and South Lights
   output reg green_northsouth_o, //high on reset
   output reg red_northsouth_o, //low on reset
@@ -48,7 +48,7 @@ module fsm(
   
   always@(*)
     begin
-      next_state = 8'b0000_0000;
+      next_state = 8'b0000_0000; //I don't think this needs to be reset since it is a combinational block that executes sequentially but it is a reg, soooo...
       case(1'b1) // synthesis parallel_case
         state[ns_green_ew_red]: if((two_minute_30_second_timer >= 16'd120_000) | (car_count_ew >= 3'd6)) next_state[ns_yellow] = 1'b1;
                                   else if (ped_button_ew_i == 1'b1) next_state[ped_ew] = 1'b1; //you may need to investigate this further due to how the pedestrian pulse works/ how long it lasts
@@ -93,9 +93,25 @@ module fsm(
         green_eastwest_o <= state[ew_green_ns_red] | state[ped_ns];
         red_eastwest_o <= state[ns_green_ew_red] | state[red_delay_ew] ;
         yellow_eastwest_o <= state[ew_yellow];
-        //transition_count_o[15:0] <= ;
+        transition_count_o[15:0] <= 16'd0;  // you need to still increment this somehow only once. a mealy would work just fine I think but think about the clock issue.
       end
-      
+
+	always @(posedge clock_i)
+		if (~reset_n_i | red_delay_ew | red_delay_ns)	two_minute_30_second_timer <= 17'd0;
+			else two_minute_30_second_timer <= two_minute_30_second_timer + 1;
+
+	always@(posedge clock_i)
+		if (~reset_n_i)
+			begin
+	    	car_count_ns <= 3'd0;
+				car_count_ew <= 3'd0;  
+			end
+		else
+			begin
+				car_count_ns <= vcount_northbound_i + vcount_southbound_i;
+				car_count_ew <= vcount_eastbound_i + vcount_westbound_i;			
+			end      
+
 endmodule
 
 

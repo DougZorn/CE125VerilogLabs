@@ -1,10 +1,9 @@
-`timescale 1us/500ns
 module clock_gen #(parameter CLOCK_PERIOD = 1000)
-(output reg clock);
+(output reg clock_i);
 
-	initial clock = 0;
+	initial clock_i = 0;
 	always
 		begin
-			#(CLOCK_PERIOD/2) clock = ~clock;
+			#(CLOCK_PERIOD/2) clock_i = ~clock_i;
 		end
 	endmodule
