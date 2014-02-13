@@ -31,6 +31,8 @@ initial
 		repeat (2) @(negedge clock_i);
 		//@(negedge clock_i);
 		reset_n_o = 1'b1;
+	
+		test_mode_o = 1'b1;
 
  	  vcount_northbound_o = 2'd0;
 	  vcount_southbound_o = 2'd0;
@@ -38,6 +40,8 @@ initial
     vcount_westbound_o = 2'd1;
     ped_button_ns_o = 1'd0;
     ped_button_ew_o = 1'd0;
-    test_mode_o = 1'd0;
+    repeat (10) @(posedge clock_i);
+    vcount_eastbound_o = 2'd1;
+    //test_mode_o = 1'd0;
 	end
 endmodule
