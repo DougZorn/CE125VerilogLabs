@@ -82,7 +82,7 @@ module fsm(
         green_eastwest_o <= 1'b0;   
         red_eastwest_o <= 1'b0;
         yellow_eastwest_o <= 1'b0;
-        //transition_count_o[15:0] <=16'h0000;
+        transition_count_o[15:0] <=16'h0000;
       end      
     else
       begin
@@ -93,7 +93,7 @@ module fsm(
         green_eastwest_o <= state[ew_green_ns_red] | state[ped_ns];
         red_eastwest_o <= state[ns_green_ew_red] | state[red_delay_ew] ;
         yellow_eastwest_o <= state[ew_yellow];
-        transition_count_o[15:0] <= 16'd0;  // you need to still increment this somehow only once. a mealy would work just fine I think but think about the clock issue.
+        //transition_count_o[15:0] <= 16'd0;  // you need to still increment this somehow only once. a mealy would work just fine I think but think about the clock issue.
       end
 
 	always @(posedge clock_i)

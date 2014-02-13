@@ -4,7 +4,7 @@ module top(
 
 wire clock_w;
 wire reset_n_w;
-wire [2:0] vcount_northbound_w; // bus?
+wire [2:0] vcount_northbound_w;
 wire [2:0] vcount_southbound_w;
 wire [2:0] vcount_eastbound_w;
 wire [2:0] vcount_westbound_w;
