@@ -47,7 +47,7 @@ initial
 
 
 		repeat (2) @(posedge clock_i);	
-		$fwrite(outfile, "The current time is:%0d us\n" ,$time);
+		$fwrite(outfile, "The current time is:%0d ms\n" ,($time/1000));
 		$fwrite(outfile, "The NS Green light counter is %d\n", transition_count_i);
 		$fwrite(outfile, "NS Green light status: %d\n", green_northsouth_i); 
 		$fwrite(outfile, "NS Yellow light status: %d\n", yellow_northsouth_i);
@@ -65,7 +65,7 @@ initial
 		vcount_eastbound_o = 3'd4;
     vcount_westbound_o = 3'd2;
     
-    $fwrite(outfile, "The current time is:%0d us\n" ,$time);
+    $fwrite(outfile, "The current time is:%0d ms\n" ,($time/1000));
     $fwrite(outfile, "The NS Green light counter is %d\n", transition_count_i);
 		$fwrite(outfile, "NS Green light status: %d\n", green_northsouth_i); 
 		$fwrite(outfile, "NS Yellow light status: %d\n", yellow_northsouth_i);
@@ -84,7 +84,7 @@ initial
     vcount_westbound_o = 3'd0;
 
 		repeat (1200) @(posedge clock_i);
-		$fwrite(outfile, "The current time is:%0d us\n" ,$time);
+		$fwrite(outfile, "The current time is:%0d ms\n" ,($time/1000));
 		$fwrite(outfile, "The NS Green light counter is %d\n", transition_count_i);
 		$fwrite(outfile, "NS Green light status: %d\n", green_northsouth_i); 
 		$fwrite(outfile, "NS Yellow light status: %d\n", yellow_northsouth_i);
@@ -98,7 +98,7 @@ initial
 		$fwrite(outfile, "W vehicle count: %d\n\n", vcount_westbound_o);
 
 		repeat (20) @(posedge clock_i);
-		$fwrite(outfile, "The current time is:%0d us\n" ,$time);
+		$fwrite(outfile, "The current time is:%0d ms\n" ,($time/1000));
 		$fwrite(outfile, "The NS Green light counter is %d\n", transition_count_i);
 		$fwrite(outfile, "NS Green light status: %d\n", green_northsouth_i); 
 		$fwrite(outfile, "NS Yellow light status: %d\n", yellow_northsouth_i);
@@ -115,10 +115,10 @@ initial
 		@(negedge clock_i);
 		ped_button_ew_o = 1'b1;
 		@(negedge clock_i);
-		$fwrite(outfile,"The EW pedestrian button was press at %0d \n\n", $time);  
+		$fwrite(outfile,"The EW pedestrian button was pressed at %0d ms\n\n", ($time/1000));  
 		@(posedge clock_i);
     ped_button_ew_o = 1'b0;
-    $fwrite(outfile, "The current time is:%0d us\n" ,$time);
+    $fwrite(outfile, "The current time is:%0d ms\n" ,($time/1000));
     $fwrite(outfile, "The NS Green light counter is %d\n", transition_count_i);
 		$fwrite(outfile, "NS Green light status: %d\n", green_northsouth_i); 
 		$fwrite(outfile, "NS Yellow light status: %d\n", yellow_northsouth_i);
@@ -135,7 +135,7 @@ initial
     vcount_northbound_o = 3'd4;
     vcount_southbound_o = 3'd2;
     
-    $fwrite(outfile, "The current time is:%0d us\n" ,$time);
+    $fwrite(outfile, "The current time is:%0d ms\n" ,($time/1000));
     $fwrite(outfile, "The NS Green light counter is %d\n", transition_count_i);
 		$fwrite(outfile, "NS Green light status: %d\n", green_northsouth_i); 
 		$fwrite(outfile, "NS Yellow light status: %d\n", yellow_northsouth_i);
@@ -148,11 +148,11 @@ initial
 		$fwrite(outfile, "E vehicle count: %d\n", vcount_eastbound_o);
 		$fwrite(outfile, "W vehicle count: %d\n\n", vcount_westbound_o);
     
-    repeat (150) @(posedge clock_i);
-    vcount_northbound_o = 3'd0;
-    vcount_southbound_o = 3'd0;
+    repeat (40) @(posedge clock_i);
+    vcount_northbound_o = 3'd1;
+    vcount_southbound_o = 3'd1;
     
-    $fwrite(outfile, "The current time is:%0d us\n" ,$time);
+    $fwrite(outfile, "The current time is:%0d ms\n" ,($time/1000));
     $fwrite(outfile, "The NS Green light counter is %d\n", transition_count_i);
 		$fwrite(outfile, "NS Green light status: %d\n", green_northsouth_i); 
 		$fwrite(outfile, "NS Yellow light status: %d\n", yellow_northsouth_i);
@@ -163,8 +163,100 @@ initial
 		$fwrite(outfile, "N vehicle count: %d\n", vcount_northbound_o);
 		$fwrite(outfile, "S vehicle count: %d\n", vcount_southbound_o);
 		$fwrite(outfile, "E vehicle count: %d\n", vcount_eastbound_o);
-		$fwrite(outfile, "W vehicle count: %d\n\n", vcount_westbound_o);    
-
+		$fwrite(outfile, "W vehicle count: %d\n\n", vcount_westbound_o);
+		
+		@(negedge clock_i);
+		ped_button_ew_o = 1'b1;
+		@(negedge clock_i);
+		$fwrite(outfile,"The EW pedestrian button was pressed at %0d ms\n\n", ($time/1000));  
+		@(posedge clock_i);
+		ped_button_ew_o = 1'b0; 
+			
+		repeat (10) @(posedge clock_i);
+		vcount_eastbound_o = 3'd4;
+    vcount_westbound_o = 3'd2;
+  
+    repeat (7) @(posedge clock_i);
+    
+    vcount_northbound_o = 3'd0;
+    vcount_southbound_o = 3'd0;  
+    
+    $fwrite(outfile, "The current time is:%0d ms\n" ,($time/1000));
+    $fwrite(outfile, "The NS Green light counter is %d\n", transition_count_i);
+		$fwrite(outfile, "NS Green light status: %d\n", green_northsouth_i); 
+		$fwrite(outfile, "NS Yellow light status: %d\n", yellow_northsouth_i);
+		$fwrite(outfile, "NS Red light status: %d\n", red_northsouth_i); 
+		$fwrite(outfile, "EW Green light status: %d\n", green_eastwest_i);
+		$fwrite(outfile, "EW Yellow light status: %d\n", yellow_eastwest_i);
+		$fwrite(outfile, "EW Red light status: %d\n", red_eastwest_i); 
+		$fwrite(outfile, "N vehicle count: %d\n", vcount_northbound_o);
+		$fwrite(outfile, "S vehicle count: %d\n", vcount_southbound_o);
+		$fwrite(outfile, "E vehicle count: %d\n", vcount_eastbound_o);
+		$fwrite(outfile, "W vehicle count: %d\n\n", vcount_westbound_o);
+		
+		repeat (35) @(posedge clock_i);
+		
+		$fwrite(outfile, "The current time is:%0d ms\n" ,($time/1000));
+    $fwrite(outfile, "The NS Green light counter is %d\n", transition_count_i);
+		$fwrite(outfile, "NS Green light status: %d\n", green_northsouth_i); 
+		$fwrite(outfile, "NS Yellow light status: %d\n", yellow_northsouth_i);
+		$fwrite(outfile, "NS Red light status: %d\n", red_northsouth_i); 
+		$fwrite(outfile, "EW Green light status: %d\n", green_eastwest_i);
+		$fwrite(outfile, "EW Yellow light status: %d\n", yellow_eastwest_i);
+		$fwrite(outfile, "EW Red light status: %d\n", red_eastwest_i); 
+		$fwrite(outfile, "N vehicle count: %d\n", vcount_northbound_o);
+		$fwrite(outfile, "S vehicle count: %d\n", vcount_southbound_o);
+		$fwrite(outfile, "E vehicle count: %d\n", vcount_eastbound_o);
+		$fwrite(outfile, "W vehicle count: %d\n\n", vcount_westbound_o);
+		
+		repeat (10) @(posedge clock_i);
+		
+		$fwrite(outfile, "The current time is:%0d ms\n" ,($time/1000));
+    $fwrite(outfile, "The NS Green light counter is %d\n", transition_count_i);
+		$fwrite(outfile, "NS Green light status: %d\n", green_northsouth_i); 
+		$fwrite(outfile, "NS Yellow light status: %d\n", yellow_northsouth_i);
+		$fwrite(outfile, "NS Red light status: %d\n", red_northsouth_i); 
+		$fwrite(outfile, "EW Green light status: %d\n", green_eastwest_i);
+		$fwrite(outfile, "EW Yellow light status: %d\n", yellow_eastwest_i);
+		$fwrite(outfile, "EW Red light status: %d\n", red_eastwest_i); 
+		$fwrite(outfile, "N vehicle count: %d\n", vcount_northbound_o);
+		$fwrite(outfile, "S vehicle count: %d\n", vcount_southbound_o);
+		$fwrite(outfile, "E vehicle count: %d\n", vcount_eastbound_o);
+		$fwrite(outfile, "W vehicle count: %d\n\n", vcount_westbound_o);
+		
+		vcount_eastbound_o = 3'd0;
+    vcount_westbound_o = 3'd0;
+    
+    repeat (1200) @(posedge clock_i);
+    
+    $fwrite(outfile, "The current time is:%0d ms\n" ,($time/1000));
+    $fwrite(outfile, "The NS Green light counter is %d\n", transition_count_i);
+		$fwrite(outfile, "NS Green light status: %d\n", green_northsouth_i); 
+		$fwrite(outfile, "NS Yellow light status: %d\n", yellow_northsouth_i);
+		$fwrite(outfile, "NS Red light status: %d\n", red_northsouth_i); 
+		$fwrite(outfile, "EW Green light status: %d\n", green_eastwest_i);
+		$fwrite(outfile, "EW Yellow light status: %d\n", yellow_eastwest_i);
+		$fwrite(outfile, "EW Red light status: %d\n", red_eastwest_i); 
+		$fwrite(outfile, "N vehicle count: %d\n", vcount_northbound_o);
+		$fwrite(outfile, "S vehicle count: %d\n", vcount_southbound_o);
+		$fwrite(outfile, "E vehicle count: %d\n", vcount_eastbound_o);
+		$fwrite(outfile, "W vehicle count: %d\n\n", vcount_westbound_o); 		
+		
+		repeat (314570400) @(posedge clock_i);
+		
+		$fwrite(outfile, "The current time is:%0d ms\n" ,($time/1000));
+    $fwrite(outfile, "The NS Green light counter is %d\n", transition_count_i);
+		$fwrite(outfile, "NS Green light status: %d\n", green_northsouth_i); 
+		$fwrite(outfile, "NS Yellow light status: %d\n", yellow_northsouth_i);
+		$fwrite(outfile, "NS Red light status: %d\n", red_northsouth_i); 
+		$fwrite(outfile, "EW Green light status: %d\n", green_eastwest_i);
+		$fwrite(outfile, "EW Yellow light status: %d\n", yellow_eastwest_i);
+		$fwrite(outfile, "EW Red light status: %d\n", red_eastwest_i); 
+		$fwrite(outfile, "N vehicle count: %d\n", vcount_northbound_o);
+		$fwrite(outfile, "S vehicle count: %d\n", vcount_southbound_o);
+		$fwrite(outfile, "E vehicle count: %d\n", vcount_eastbound_o);
+		$fwrite(outfile, "W vehicle count: %d\n\n", vcount_westbound_o); 
+		
 		$fclose(outfile);
 		
 	end
