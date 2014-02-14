@@ -2,3 +2,4 @@
 2. Implement NS green light counter. It does not overflow and holds at max once reached. (Possibly mealy)
 3. Check synthesis of fsm module.
 4. Lab report.
+5. Test cases where 6 or more cars are waiting.
