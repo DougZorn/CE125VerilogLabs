@@ -55,7 +55,7 @@ initial
 		$fwrite(outfile, "N vehicle count: %d\n", vcount_northbound_o);
 		$fwrite(outfile, "S vehicle count: %d\n", vcount_southbound_o);
 		$fwrite(outfile, "E vehicle count: %d\n", vcount_eastbound_o);
-		$fwrite(outfile, "W vehicle count: %d\n", vcount_westbound_o);
+		$fwrite(outfile, "W vehicle count: %d\n\n", vcount_westbound_o);
 
 /*
 		while(green_eastwest_i != 1)
@@ -72,7 +72,7 @@ initial
 		$fwrite(outfile, "N vehicle count: %d\n", vcount_northbound_o);
 		$fwrite(outfile, "S vehicle count: %d\n", vcount_southbound_o);
 		$fwrite(outfile, "E vehicle count: %d\n", vcount_eastbound_o);
-		$fwrite(outfile, "W vehicle count: %d\n", vcount_westbound_o);
+		$fwrite(outfile, "W vehicle count: %d\n\n", vcount_westbound_o);
 
 
     repeat (10) @(posedge clock_i);
