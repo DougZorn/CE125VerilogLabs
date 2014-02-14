@@ -1,6 +1,8 @@
 Simulation output for Lab 3
 
-The current time is:6500 us
+The NS Green light counter is     0
+The current time is:3 ms
+The NS Green light counter is     0
 NS Green light status: 1
 NS Yellow light status: 0
 NS Red light status: 0
@@ -12,7 +14,90 @@ S vehicle count: 0
 E vehicle count: 0
 W vehicle count: 1
 
-The current time is:1206500 us
+The current time is:203 ms
+The NS Green light counter is     0
+NS Green light status: 1
+NS Yellow light status: 0
+NS Red light status: 0
+EW Green light status: 0
+EW Yellow light status: 0
+EW Red light status: 1
+N vehicle count: 0
+S vehicle count: 0
+E vehicle count: 4
+W vehicle count: 2
+
+The current time is:2403 ms
+The NS Green light counter is     1
+NS Green light status: 1
+NS Yellow light status: 0
+NS Red light status: 0
+EW Green light status: 0
+EW Yellow light status: 0
+EW Red light status: 1
+N vehicle count: 0
+S vehicle count: 0
+E vehicle count: 0
+W vehicle count: 0
+
+The current time is:2423 ms
+The NS Green light counter is     1
+NS Green light status: 1
+NS Yellow light status: 0
+NS Red light status: 0
+EW Green light status: 0
+EW Yellow light status: 0
+EW Red light status: 1
+N vehicle count: 0
+S vehicle count: 0
+E vehicle count: 0
+W vehicle count: 0
+
+The EW pedestrian button was pressed at 2425 ms
+
+The current time is:2425 ms
+The NS Green light counter is     1
+NS Green light status: 1
+NS Yellow light status: 0
+NS Red light status: 0
+EW Green light status: 0
+EW Yellow light status: 0
+EW Red light status: 1
+N vehicle count: 0
+S vehicle count: 0
+E vehicle count: 0
+W vehicle count: 0
+
+The current time is:2475 ms
+The NS Green light counter is     1
+NS Green light status: 0
+NS Yellow light status: 0
+NS Red light status: 1
+EW Green light status: 1
+EW Yellow light status: 0
+EW Red light status: 0
+N vehicle count: 4
+S vehicle count: 2
+E vehicle count: 0
+W vehicle count: 0
+
+The current time is:2515 ms
+The NS Green light counter is     2
+NS Green light status: 1
+NS Yellow light status: 0
+NS Red light status: 0
+EW Green light status: 0
+EW Yellow light status: 0
+EW Red light status: 1
+N vehicle count: 1
+S vehicle count: 1
+E vehicle count: 0
+W vehicle count: 0
+
+The EW pedestrian button was pressed at 2517 ms
+
+The current time is:2534 ms
+The NS Green light counter is     2
 NS Green light status: 0
 NS Yellow light status: 1
 NS Red light status: 0
@@ -21,18 +106,45 @@ EW Yellow light status: 0
 EW Red light status: 1
 N vehicle count: 0
 S vehicle count: 0
-E vehicle count: 0
-W vehicle count: 1
+E vehicle count: 4
+W vehicle count: 2
 
-The current time is:1226500 us
+The current time is:2569 ms
+The NS Green light counter is     2
+NS Green light status: 0
+NS Yellow light status: 0
+NS Red light status: 1
+EW Green light status: 1
+EW Yellow light status: 0
+EW Red light status: 0
+N vehicle count: 0
+S vehicle count: 0
+E vehicle count: 4
+W vehicle count: 2
+
+The current time is:2579 ms
+The NS Green light counter is     2
+NS Green light status: 0
+NS Yellow light status: 0
+NS Red light status: 1
+EW Green light status: 1
+EW Yellow light status: 0
+EW Red light status: 0
+N vehicle count: 0
+S vehicle count: 0
+E vehicle count: 4
+W vehicle count: 2
+
+The current time is:3779 ms
+The NS Green light counter is     2
 NS Green light status: 0
 NS Yellow light status: 0
 NS Red light status: 1
 EW Green light status: 0
-EW Yellow light status: 0
-EW Red light status: 1
+EW Yellow light status: 1
+EW Red light status: 0
 N vehicle count: 0
 S vehicle count: 0
 E vehicle count: 0
-W vehicle count: 1
+W vehicle count: 0
 

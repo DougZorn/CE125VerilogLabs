@@ -28,7 +28,7 @@ module test_bench(
 initial 
 	begin
 
-		outfile = $fopen("C:/Users/dzorn/Desktop/lab3modelsim/lab3_out.dat");
+		outfile = $fopen("C:/Users/Doug/Desktop/CE125VerilogLabs/Lab 3/lab3_out.dat");
     $fwrite(outfile, "Simulation output for Lab 3\n\n");
 		reset_n_o = 1'b1;
 		@(negedge clock_i);
