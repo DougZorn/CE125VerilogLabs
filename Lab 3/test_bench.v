@@ -57,6 +57,24 @@ initial
 		$fwrite(outfile, "E vehicle count: %d\n", vcount_eastbound_o);
 		$fwrite(outfile, "W vehicle count: %d\n", vcount_westbound_o);
 
+/*
+		while(green_eastwest_i != 1)
+			begin
+			end
+*/
+		$fwrite(outfile, "The current time is:%0d us\n" ,$time);
+		$fwrite(outfile, "NS Green light status: %d\n", green_northsouth_i); 
+		$fwrite(outfile, "NS Yellow light status: %d\n", yellow_northsouth_i);
+		$fwrite(outfile, "NS Red light status: %d\n", red_northsouth_i); 
+		$fwrite(outfile, "EW Green light status: %d\n", green_eastwest_i);
+		$fwrite(outfile, "EW Yellow light status: %d\n", yellow_eastwest_i);
+		$fwrite(outfile, "EW Red light status: %d\n", red_eastwest_i); 
+		$fwrite(outfile, "N vehicle count: %d\n", vcount_northbound_o);
+		$fwrite(outfile, "S vehicle count: %d\n", vcount_southbound_o);
+		$fwrite(outfile, "E vehicle count: %d\n", vcount_eastbound_o);
+		$fwrite(outfile, "W vehicle count: %d\n", vcount_westbound_o);
+
+
     repeat (10) @(posedge clock_i);
     vcount_eastbound_o = 2'd1;
 		repeat (10) @(posedge clock_i);
