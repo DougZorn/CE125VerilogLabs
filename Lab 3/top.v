@@ -36,7 +36,7 @@ test_bench test_bench_0 (.clock_i(clock_w),
 				    						 .green_eastwest_i(green_eastwest_w), 
 							  				 .red_eastwest_i(red_eastwest_w), 
 							  				 .yellow_eastwest_i(yellow_eastwest_w),
-											   .transition_count_i());
+											   .transition_count_i(transition_count_w));
 
 fsm fsm_0 (.clock_i(clock_w),
 					 .reset_n_i(reset_n_w),
