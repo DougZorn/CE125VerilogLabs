@@ -37,9 +37,7 @@ module fsm(
                     
 
   reg [7:0] state;
-  reg [7:0] next_state;
-  
-  //reg [2:0] car_count_ns = vcount_northbound_i + vcount_southbound_i; //this needs to be reset and not driven by two different drivers
+  reg [7:0] next_state;  
   
   reg [2:0] car_count_ns;
   reg [2:0] car_count_ew;
@@ -48,8 +46,8 @@ module fsm(
   
 	reg [16:0] delay_two_17;
 	reg [16:0] delay_thirty_17;
-  reg [10:0] delay_two_11;
-	reg [10:0] delay_three_11;
+  reg [11:0] delay_two_12;
+	reg [11:0] delay_three_12;
 
 
 	always@(*)
@@ -58,40 +56,39 @@ module fsm(
 				begin
 					delay_two_17 = 17'd1_200;
 					delay_thirty_17 = 17'd300;
-  				delay_two_11 = 11'd20;
-					delay_three_11 = 11'd30;
+  				  delay_two_12 = 12'd20;
+					delay_three_12 = 12'd30;
 				end
 			else //if
 				begin
 					delay_two_17 = 17'd120_000;
 					delay_thirty_17 = 17'd30_000;
-  				delay_two_11 = 11'd2_000;
-					delay_three_11 = 11'd3_000;
+  				delay_two_12 = 12'd2_000;
+					delay_three_12 = 12'd3_000;
 				end //else
 		end //always
 
   always@(*)
     begin
-			//if(test_mode_i);
-      next_state = 8'b0000_0000; //I don't think this needs to be reset since it is a combinational block that executes sequentially but it is a reg, soooo...
+      next_state = 8'b0000_0000; 
       case(1'b1) // synthesis parallel_case
         state[ns_green_ew_red]: if((two_minute_30_second_timer >= delay_two_17) | (car_count_ew >= 3'd6)) next_state[ns_yellow] = 1'b1;
                                   else if (ped_button_ew_i == 1'b1) next_state[ped_ew] = 1'b1; //you may need to investigate this further due to how the pedestrian pulse works/ how long it lasts
                                     else next_state[ns_green_ew_red] = 1'b1;  
         state[ped_ew]: if ((two_minute_30_second_timer >= delay_thirty_17) | (car_count_ew >= 3'd6)) next_state[ns_yellow] = 1'b1;
                         else next_state[ped_ew] = 1'b1;
-        state[ns_yellow]: if(two_second_one_second_yellow_delay >= delay_two_11) next_state[red_delay_ns] = 1'b1;
+        state[ns_yellow]: if(two_second_one_second_yellow_delay >= delay_two_12) next_state[red_delay_ns] = 1'b1;
                             else next_state[ns_yellow] = 1'b1;
-        state[red_delay_ns]: if(two_second_one_second_yellow_delay >= delay_three_11) next_state[ew_green_ns_red] = 1'b1;
+        state[red_delay_ns]: if(two_second_one_second_yellow_delay >= delay_three_12) next_state[ew_green_ns_red] = 1'b1;
                               else next_state[red_delay_ns] =1'b1;
         state[ew_green_ns_red]: if ((two_minute_30_second_timer >= delay_two_17) | (car_count_ns >= 3'd6)) next_state[ew_yellow] = 1'b1;
                                   else if (ped_button_ns_i == 1'b1) next_state[ped_ns] = 1'b1; //you may need to investigate this further due to how the pedestrian pulse works/ how long it lasts
                                     else next_state[ew_green_ns_red] = 1'b1; 
         state[ped_ns]: if ((two_minute_30_second_timer >= delay_thirty_17) | (car_count_ns >= 3'd6)) next_state[ew_yellow] = 1'b1;
                         else next_state[ped_ns] = 1'b1;
-        state[ew_yellow]: if(two_second_one_second_yellow_delay >= delay_two_11) next_state[red_delay_ew] = 1'b1;
+        state[ew_yellow]: if(two_second_one_second_yellow_delay >= delay_two_12) next_state[red_delay_ew] = 1'b1;
                             else next_state[ew_yellow] = 1'b1;
-        state[red_delay_ew]: if(two_second_one_second_yellow_delay >= delay_three_11) next_state[ns_green_ew_red] = 1'b1;
+        state[red_delay_ew]: if(two_second_one_second_yellow_delay >= delay_three_12) next_state[ns_green_ew_red] = 1'b1;
                               else next_state[red_delay_ew] = 1'b1;     
       endcase 
     end // always
@@ -106,8 +103,7 @@ module fsm(
         yellow_northsouth_o <= 1'b0;   
         green_eastwest_o <= 1'b0;   
         red_eastwest_o <= 1'b0;
-        yellow_eastwest_o <= 1'b0;
-        transition_count_o[15:0] <=16'h0000;
+        yellow_eastwest_o <= 1'b0;        
       end      
     else
       begin
@@ -118,8 +114,14 @@ module fsm(
         green_eastwest_o <= state[ew_green_ns_red] | state[ped_ns];
         red_eastwest_o <= state[ns_green_ew_red] | state[red_delay_ew] | state[ns_yellow] | state[red_delay_ns] | state[ped_ew] ;
         yellow_eastwest_o <= state[ew_yellow];
-        //transition_count_o[15:0] <= 16'd0;  // you need to still increment this somehow only once. a mealy would work just fine I think but think about the clock issue.
+         
       end
+      
+  always@(posedge clock_i)
+    if(~reset_n_i) transition_count_o[15:0] <=16'h0000;
+        else if (transition_count_o[15:0] == 16'hFFFF) transition_count_o[15:0] <= 16'hFFFF;
+          else if(state[red_delay_ew] & (two_second_one_second_yellow_delay == delay_three_12)) transition_count_o[15:0] <= transition_count_o + 16'd1;
+            else transition_count_o[15:0] <= transition_count_o[15:0];
 
 	always @(posedge clock_i)
 		if (~reset_n_i | state[red_delay_ew] | state[red_delay_ns] | state[ns_yellow] |state[ew_yellow] )	two_minute_30_second_timer <= 17'd0;
@@ -131,7 +133,7 @@ module fsm(
 	always@(posedge clock_i)
 		if (~reset_n_i)
 			begin
-	    	car_count_ns <= 3'd0;
+			  car_count_ns <= 3'd0;
 				car_count_ew <= 3'd0;  
 			end
 		else
@@ -141,6 +143,7 @@ module fsm(
 			end      
 
 endmodule
+
 
 
 
