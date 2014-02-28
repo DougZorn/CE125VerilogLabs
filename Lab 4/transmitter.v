@@ -8,4 +8,19 @@ module transmitter(
 	output reg tx_sdata_o,
 	output reg tx_pready_o
 );
+
+wire tx2_pdata_valid_w;
+
+sync_valid_p_2_s sync_valid_p_2_s_0(
+	.tx_sclk_n_i(tx_sclk_i),
+	.tx_srst_n_i(tx_srst_n_i),
+	.tx_pdata_valid_i(tx_pdata_valid_i),
+	.tx2_pdata_valid_o(tx2_pdata_valid_w)
+);
+
+
+
+
 endmodule
+
+
