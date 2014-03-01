@@ -3,7 +3,6 @@ module sync_ready_s_2_p(
 	input prst_n_i,
 	input tx_pready_i,
 	output reg tx2_pready_o
-
 );
 reg tx1_pready_o;
 

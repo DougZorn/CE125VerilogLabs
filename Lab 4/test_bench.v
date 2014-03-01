@@ -4,7 +4,8 @@ module test_bench(
 	input tx_sclk,
 	output reg prst_n_o, 
 	output reg tx_srst_n_o,
-	output reg tx_pdata_valid_o
+	output reg tx_pdata_valid_o,
+	output reg [7:0] tx_pdata_o
 );
 
 initial
@@ -24,6 +25,7 @@ initial
 		prst_n_o = 1'b1;
 
 		repeat (4) @(posedge p_clk);
+		tx_pdata_o = 8'd197;
 	
 		tx_pdata_valid_o = 1'b1;
 		@(negedge tx_sclk);
