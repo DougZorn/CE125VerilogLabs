@@ -1,4 +1,4 @@
-module transmitter(
+module uart_tx(
 	input pclk_i,
 	input prst_n_i,
 	input [7:0] tx_pdata_i,
@@ -10,7 +10,6 @@ module transmitter(
 );
 
 wire tx2_pdata_valid_w;
-reg tx_pready_w;
 
 sync_valid_p_2_s sync_valid_p_2_s_0(
 	.tx_sclk_n_i(tx_sclk_i),
@@ -18,16 +17,8 @@ sync_valid_p_2_s sync_valid_p_2_s_0(
 	.tx_pdata_valid_i(tx_pdata_valid_i),
 	.tx2_pdata_valid_o(tx2_pdata_valid_w)
 );
-//this needs to be fixed tx_pready_w
 
-/*
-sync_ready_s_2_p sync_ready_s_2_p_0(
-	.pclk_i(pclk_i),
-	.prst_n_i(prst_n_i),
-	.tx_pready_i(tx_pready_w), //from fsm
-	.tx2_pready_o(tx_pready_o)
-);	
-*/
+
 	localparam [1:0] idle = 2'b0, transfer = 2'b1;
 	reg [1:0] state;
   reg [1:0] next_state;
@@ -41,7 +32,7 @@ sync_ready_s_2_p sync_ready_s_2_p_0(
 				state[idle]: if(tx2_pdata_valid_w) // this is the synchronized p to s valid
 											begin
 												next_state[transfer] = 1'b1; 
-												s_data[4'd0] = 1'b0; //these might need a reset for good measure and design practice
+												s_data[4'd0] = 1'b0; 
 												s_data[4'd1] = tx_pdata_i[3'd0];
 												s_data[4'd2] = tx_pdata_i[3'd1];
 												s_data[4'd3] = tx_pdata_i[3'd2];
@@ -50,7 +41,7 @@ sync_ready_s_2_p sync_ready_s_2_p_0(
 												s_data[4'd6] = tx_pdata_i[3'd5];
 												s_data[4'd7] = tx_pdata_i[3'd6];
 												s_data[4'd8] = tx_pdata_i[3'd7];
-												s_data[4'd9] = 1'b1 ;//parity need to fix simply
+												s_data[4'd9] = 1'b1 ;
 												s_data[4'd10] = 1'b1;							
 											end
 										 	else

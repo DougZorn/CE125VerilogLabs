@@ -1,6 +1,5 @@
 `timescale 1ns/100ps
 module top(
-
 );
 
 wire p_clk_w;
@@ -14,6 +13,7 @@ wire tx_2_rx_s_data_w;
 wire [9:0] wdata_w;
 wire winc_w;
 wire rx_srst_n_w;
+wire tx_pready_w;
 
 clock_gen #(.CLOCK_PERIOD(1000)) clock_gen_p_clk_0 (.clock_i(p_clk_w));
 clock_gen #(.CLOCK_PERIOD(100)) clock_gen_tx_sclk_0 (.clock_i(tx_sclk_w));
@@ -30,7 +30,7 @@ test_bench test_bench_0(
 	.tx_srst_n_o(tx_srst_n_w)
 );
 
-transmitter transmitter_0(
+uart_tx uart_tx_0(
 	.pclk_i(p_clk_w),
 	.prst_n_i(prst_n_w),
 	.tx_pdata_i(tx_pdata_w),
@@ -38,10 +38,10 @@ transmitter transmitter_0(
 	.tx_sclk_i(tx_sclk_w),
 	.tx_srst_n_i(tx_srst_n_w),
 	.tx_sdata_o(tx_2_rx_s_data_w),
-	.tx_pready_o()
+	.tx_pready_o(tx_pready_w)
 );
 
-fsm fsm_0(
+uart_rx uart_rx_0(
 	.rx_sclk_i(rx_sclk_w),
 	.rx_data_i(tx_2_rx_s_data_w),
 	.rx_srst_n_i(rx_srst_n_w),

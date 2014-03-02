@@ -1,9 +1,9 @@
-module fsm(
+module uart_rx(
 	input rx_sclk_i,
 	input rx_data_i,
 	input rx_srst_n_i,
 	output reg [9:0] wdata_o, //Data plus error
-	output winc_o        //write enable for data
+	output winc_o             //write enable for data
 );
 
 	localparam [2:0] idle = 3'd0,
@@ -34,27 +34,16 @@ module fsm(
 														  else if(bit_index == all_bits_received) next_state[write_to_fifo] = 1'b1;
 															else next_state[wait_to_sample] = 1'b1;				
 				state[write_to_fifo]: next_state[idle] = 1'b1;
-
-				default:   ;//errorstate
-
+				
 			endcase
 		end //always
 
 assign winc_o = state[write_to_fifo];
-/*	always@(*) //reg if always block
-		begin
-			if(state[write_to_fifo]) winc_o = 1'b1;
-				else winc_o = 1'b0;
-		end
-*/
+
 	always@(posedge rx_sclk_i)
 		if(!rx_srst_n_i) state <= 5'b0_0001;
 			else state <= next_state;
-/*
-	always@(posedge rx_sclk_i)
-		if(!rx_srst_n_i) wdata_o <= 8'd0;
-			else
-*/
+
 	always@(posedge rx_sclk_i)
 		if(!rx_srst_n_i | state[sample] | state[write_to_fifo]) sample_counter <= 4'd0;
 			else if (state[initial_wait] | state[wait_to_sample]) sample_counter <= sample_counter + 4'd1;
