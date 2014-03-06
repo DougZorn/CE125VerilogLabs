@@ -49,7 +49,7 @@ sync_valid_p_2_s sync_valid_p_2_s_0(
 													tx_sdata_o = 1'b1;
 													next_state[idle] = 1'b1;
 												end
-				state[transfer]: if (transfer_index_count < 4'd8)
+				state[transfer]: if (transfer_index_count < 4'd9)
 												 	begin
 												 		next_state[transfer] = 1'b1;												
 														tx_sdata_o = s_data[transfer_index_count];
@@ -74,5 +74,6 @@ sync_valid_p_2_s sync_valid_p_2_s_0(
 
 
 endmodule
+
 
 
