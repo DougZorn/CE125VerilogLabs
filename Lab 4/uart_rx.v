@@ -2,9 +2,27 @@ module uart_rx(
 	input rx_sclk_i,
 	input rx_data_i,
 	input rx_srst_n_i,
-	output reg [9:0] wdata_o, //Data plus error
+	input pclk_i,
+	input prst_n_i,
+	output reg [9:0] wdata_o, //Data plus error plus stop bit
 	output winc_o             //write enable for data
 );
+
+  wire read_data_valid_w;
+  
+  async_fifo #(.FIFO_WIDTH(9),.FIFO_DEPTH(16),.ADDR_WIDTH(4)) asycn_fifo_0(   //dear doug you need
+   .write_clock_i(rx_sclk_i),         // Write clock, posedge used
+   .write_reset_n_i(rx_srst_n_i),       // Reset in the write clock domain: active low, synchronous
+   .write_data_i(wdata_o[8:0]), // Data from upstream //data plus p error?
+   .write_data_valid_i(winc_o),    // Valid for write data
+   .write_ready_o(),    // Ready to external logic //this should just be a wire for full condition of the FIFO, so if it is low the fifo can receive data
+   // Read-side interface
+   .read_clock_i(pclk_i),         // Read clock, posedge used
+   .read_reset_n_i(prst_n_i),       // Reset in the read clock domain: active low, synchronous
+   .read_data_o(), // Data to downstream logic
+   .read_data_valid_o(read_data_valid_w),    // Valid for read data // there is data on the fifo that is ready to be read
+   .read_ready_i(1'b1)         // Ready from downstream logic    
+  );
 
 	localparam [2:0] idle = 3'd0,
 									 initial_wait = 3'd1,
@@ -28,8 +46,7 @@ module uart_rx(
 									  	else next_state[idle] = 1'b1;
 				state[initial_wait]:if(sample_counter == count_10) next_state[sample] = 1'b1;
 														else next_state[initial_wait] = 1'b1;
-				state[sample]: begin wdata_o[bit_index] = rx_data_i;
-											 	next_state[wait_to_sample] = 1'b1; end
+				state[sample]: next_state[wait_to_sample] = 1'b1;
 				state[wait_to_sample]:if(sample_counter == count_6) next_state[sample] = 1'b1;
 														  else if(bit_index == all_bits_received) next_state[write_to_fifo] = 1'b1;
 															else next_state[wait_to_sample] = 1'b1;				
