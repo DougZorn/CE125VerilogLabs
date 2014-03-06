@@ -40,7 +40,7 @@ uart_tx uart_tx_0(
 	.tx_sclk_i(tx_sclk_w),
 	.tx_srst_n_i(master_rst_w),
 	.tx_sdata_o(tx_2_rx_s_data_w),
-	.tx_pready_o(tx_pready_w)
+	.tx_pready_o(tx_pready_w)	
 );
 
 uart_rx uart_rx_0(
@@ -48,7 +48,9 @@ uart_rx uart_rx_0(
 	.rx_data_i(tx_2_rx_s_data_w),
 	.rx_srst_n_i(master_rst_w),
 	.wdata_o(wdata_w), 
-	.winc_o(winc_w)       
+	.winc_o(winc_w),
+	.pclk_i(p_clk_w),
+	.prst_n_i(master_rst_w)       
 );
 
 endmodule
