@@ -45,11 +45,18 @@ assign winc_o = state[write_to_fifo];
 			else state <= next_state;
 
 	always@(posedge rx_sclk_i)
-		if(!rx_srst_n_i | state[sample] | state[write_to_fifo]) sample_counter <= 4'd0;
-			else if (state[initial_wait] | state[wait_to_sample]) sample_counter <= sample_counter + 4'd1;
+		if(!rx_srst_n_i) sample_counter <= 4'd0;
+		  else if(state[sample] || state[write_to_fifo]) sample_counter <= 4'd0;
+    		  else if (state[initial_wait] || state[wait_to_sample]) sample_counter <= sample_counter + 4'd1;
 
 	always@(posedge rx_sclk_i)
 		if(!rx_srst_n_i | state[write_to_fifo]) bit_index <= 4'd0; 
-			else if ((state[wait_to_sample]) & (sample_counter == count_6)) bit_index <= bit_index + 4'd1;
+			else if ((state[wait_to_sample]) && (sample_counter == count_6)) bit_index <= bit_index + 4'd1;
+			  
+	always@(posedge rx_sclk_i)
+	 if(!rx_srst_n_i) wdata_o <= 10'b00_0000_0000;
+	   else if (state[sample]) wdata_o[bit_index] <= rx_data_i;
+	     //else // no else condition? I am leaning towards no
+	 
 
 endmodule
