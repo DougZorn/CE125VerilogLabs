@@ -16,7 +16,7 @@ module uart(
   output rx_pdata_err_o
 );
 
-
+//ts
 //clocks
 wire p_clk_w;
 wire tx_sclk_w;
@@ -25,16 +25,16 @@ wire rx_sclk_w;
 wire master_rst_w;
 
 //tx input
-wire tx_pdata_w;
+wire [7:0] tx_pdata_w;
 assign tx_pdata_w = tx_pdata_i;
-wire pdata_valid_w;
+wire  pdata_valid_w;
 assign pdata_valid_w = pdata_valid_i;
 //tx output
 wire tx_pready_w = tx_pready_o; // for upstream logic
 
 //rx input
 
-wire wdata_w; //to async fifo then output
+wire [8:0] wdata_w; //to async fifo then output
 wire winc_w; // to async fifo 
 
 wire [8:0] read_data_plus_parity_w;
