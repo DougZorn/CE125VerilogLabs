@@ -1,28 +1,34 @@
 module uart(
   input master_reset,
-  //Transmitter
-  input pclk_i,
+  //Transmitter  
   input [7:0]tx_pdata_i,
   input pdata_valid_i,
-  input tx_sclk_i,
+  input CLK_IN1,
   output tx_pready_o,
   output tx_sdata_o,
-  //Receiver  
-  input rx_sclk_i,
+  //Receiver   
   input rx_sdata_i,
-	input read_ready_i, // downstream logic into FIFO p read
+  input read_ready_i, // downstream logic into FIFO p read
   output [7:0] rx_pdata_o, // reg?
   output rx_pdata_valid_o,
   output rx_pdata_err_o
 );
 
-//ts
 //clocks
+wire clk1_w;
 wire p_clk_w;
 wire tx_sclk_w;
 wire rx_sclk_w;
 //resets
 wire master_rst_w;
+
+clockgen test(
+	.CLK_IN1(CLK_IN1),	
+	.CLK_OUT1(clk1_w), // not used
+	.CLK_OUT2(tx_sclk_w),
+	.CLK_OUT3(rx_sclk_w),
+	.CLK_OUT4(p_clk_w)
+);
 
 //tx input
 wire [7:0] tx_pdata_w;
@@ -30,7 +36,8 @@ assign tx_pdata_w = tx_pdata_i;
 wire  pdata_valid_w;
 assign pdata_valid_w = pdata_valid_i;
 //tx output
-wire tx_pready_w = tx_pready_o; // for upstream logic
+wire tx_pready_w;
+assign tx_pready_o = tx_pready_w; // for upstream logic
 
 //rx input
 
@@ -40,9 +47,6 @@ wire winc_w; // to async fifo
 wire [8:0] read_data_plus_parity_w;
 assign rx_pdata_o = read_data_plus_parity_w[7:0];
 assign rx_pdata_err_o = read_data_plus_parity_w[8];
-
-
-
 
 uart_tx uart_tx_0(
 	.pclk_i(p_clk_w),
