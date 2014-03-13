@@ -10,12 +10,12 @@ wire rx_sclk_w;
 wire tx_pdata_valid_w;
 wire [7:0] tx_pdata_w;
 wire tx_2_rx_s_data_w;
-wire [9:0] wdata_w;
+wire [8:0] wdata_w;
 wire winc_w;
 //wire rx_srst_n_w;
 wire tx_pready_w;
 wire master_rst_w;
-wire [9:0] read_data_w;
+wire [8:0] read_data_w;
 wire write_ready_w;
 wire read_data_valid_w;
 wire read_ready_w;
@@ -59,7 +59,7 @@ uart_rx uart_rx_0(
 	.prst_n_i(master_rst_w)       
 );
 
-async_fifo #(.FIFO_WIDTH(10),.FIFO_DEPTH(128),.ADDR_WIDTH(7)) asycn_fifo_0 ( //change this width to 9 once you get rid of the stop bit 
+async_fifo #(.FIFO_WIDTH(9),.FIFO_DEPTH(128),.ADDR_WIDTH(7)) asycn_fifo_0 ( //change this width to 9 once you get rid of the stop bit 
 	.write_clock_i(rx_sclk_w),         // Write clock, posedge used in this case 80MHz
 	.write_reset_n_i(master_rst_w),       // Reset in the write clock domain: active low, synchronous
 	.write_data_i(wdata_w), // Data from upstream [FIFO_WIDTH-1:0] 
