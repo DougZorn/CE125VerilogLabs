@@ -44,11 +44,27 @@ initial
 		*/
 		
 		repeat (4) @(posedge p_clk_i);
-		tx_pdata_o = 8'd197;
+		
 		
 		
 		@(negedge p_clk_i);
+		tx_pdata_o = 8'd197;
 		tx_pdata_valid_o = 1'b1;
+
+		repeat(11)@(posedge tx_sclk_i);
+		tx_pdata_o = 8'd97;
+
+		repeat(11)@(negedge tx_sclk_i);
+		tx_pdata_o = 8'd64;
+
+		repeat(11)@(negedge tx_sclk_i);
+		tx_pdata_o = 8'd12;
+
+		repeat(11)@(negedge tx_sclk_i);
+		tx_pdata_o = 8'd254;
+
+		
+		
 		//@(negedge p_clk_i);
 		//tx_pdata_valid_o = 1'b0;
 

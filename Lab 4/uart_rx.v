@@ -8,22 +8,6 @@ module uart_rx(
 	output winc_o             //write enable for data
 );
 
-  wire read_data_valid_w;
-  
-  async_fifo #(.FIFO_WIDTH(9),.FIFO_DEPTH(16),.ADDR_WIDTH(4)) asycn_fifo_0(   //dear doug you need
-   .write_clock_i(rx_sclk_i),         // Write clock, posedge used
-   .write_reset_n_i(rx_srst_n_i),       // Reset in the write clock domain: active low, synchronous
-   .write_data_i(wdata_o[8:0]), // Data from upstream //data plus p error?
-   .write_data_valid_i(winc_o),    // Valid for write data
-   .write_ready_o(),    // Ready to external logic //this should just be a wire for full condition of the FIFO, so if it is low the fifo can receive data
-   // Read-side interface
-   .read_clock_i(pclk_i),         // Read clock, posedge used
-   .read_reset_n_i(prst_n_i),       // Reset in the read clock domain: active low, synchronous
-   .read_data_o(), // Data to downstream logic
-   .read_data_valid_o(read_data_valid_w),    // Valid for read data // there is data on the fifo that is ready to be read
-   .read_ready_i(1'b1)         // Ready from downstream logic    
-  );
-
 	localparam [2:0] idle = 3'd0,
 									 initial_wait = 3'd1,
 									 sample = 3'd2,
@@ -73,7 +57,6 @@ assign winc_o = state[write_to_fifo];
 	always@(posedge rx_sclk_i)
 	 if(!rx_srst_n_i) wdata_o <= 10'b00_0000_0000;
 	   else if (state[sample]) wdata_o[bit_index] <= rx_data_i;
-	     //else // no else condition? I am leaning towards no
-	 
+	     //else // no else condition? I am leaning towards no	 
 
 endmodule
