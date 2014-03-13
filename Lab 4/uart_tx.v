@@ -27,9 +27,9 @@ sync_valid_p_2_s sync_valid_p_2_s_0(
 
 	always@(*)
     begin
-      next_state = 2'b00;
+    next_state = 2'b00;
 		tx_sdata_o = 1'b1;
-		s_data = 11'd0;
+		//s_data = 11'd0;
       case(1'b1) // synthesis parallel_case
 				state[idle]: if(tx2_pdata_valid_w & tx_pready_o) // this is the synchronized p to s valid
 											begin
