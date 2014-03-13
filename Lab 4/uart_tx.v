@@ -21,13 +21,15 @@ sync_valid_p_2_s sync_valid_p_2_s_0(
 
 	localparam [1:0] idle = 2'b0, transfer = 2'b1;
 	reg [1:0] state;
-  reg [1:0] next_state;
+   reg [1:0] next_state;
 	reg [3:0] transfer_index_count; //sync reset
 	reg [10:0] s_data;
 
 	always@(*)
     begin
-      next_state = 2'b00; 
+      next_state = 2'b00;
+		tx_sdata_o = 1'b1;
+		s_data = 11'd0;
       case(1'b1) // synthesis parallel_case
 				state[idle]: if(tx2_pdata_valid_w & tx_pready_o) // this is the synchronized p to s valid
 											begin
@@ -59,6 +61,11 @@ sync_valid_p_2_s sync_valid_p_2_s_0(
 														next_state[idle] = 1'b1;
 														tx_sdata_o = s_data[transfer_index_count];
 													end
+				default: begin
+								next_state[idle] = 1'b1;
+								tx_sdata_o = 1'b1;
+								s_data = 11'd0;
+							end
 				endcase
 		end//always	 
 
