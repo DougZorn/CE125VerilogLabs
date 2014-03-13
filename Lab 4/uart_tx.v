@@ -20,7 +20,7 @@ sync_valid_p_2_s sync_valid_p_2_s_0(
 
 	localparam [1:0] idle = 2'b0, transfer = 2'b1;
 	reg [1:0] state;
-  reg [1:0] next_state;
+   reg [1:0] next_state;
 	reg [3:0] transfer_index_count; //sync reset
 	reg [10:0] s_data;
 
