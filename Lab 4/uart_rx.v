@@ -8,6 +8,7 @@ module uart_rx(
 	output winc_o             //write enable for data
 );
 
+
 	localparam [2:0] idle = 3'd0,
 									 initial_wait = 3'd1,
 									 sample = 3'd2,
@@ -32,7 +33,11 @@ module uart_rx(
 														else next_state[initial_wait] = 1'b1;
 				state[sample]: next_state[wait_to_sample] = 1'b1;
 				state[wait_to_sample]:if(sample_counter == count_6) next_state[sample] = 1'b1;
-														  else if(bit_index == all_bits_received) next_state[write_to_fifo] = 1'b1;
+														  else if(bit_index == all_bits_received)
+																begin 
+																	next_state[write_to_fifo] = 1'b1;
+																	wdata_o[8] = wdata_o[8]^(~^wdata_o[7:0]);																	
+																end
 															else next_state[wait_to_sample] = 1'b1;				
 				state[write_to_fifo]: next_state[idle] = 1'b1;
 				
