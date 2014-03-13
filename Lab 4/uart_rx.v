@@ -56,7 +56,9 @@ assign winc_o = state[write_to_fifo];
 			  
 	always@(posedge rx_sclk_i)
 	 if(!rx_srst_n_i) wdata_o <= 10'b00_0000_0000;
-	   else if (state[sample]) wdata_o[bit_index] <= rx_data_i;
+	   else if (state[sample]) wdata_o[bit_index] <= rx_data_i;	// keeps old values after transmit consider a reset
+			else if (state[idle]) wdata_o <= 10'b00_0000_0000;
+
 	     //else // no else condition? I am leaning towards no	 
 
 endmodule

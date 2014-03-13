@@ -18,6 +18,7 @@ wire master_rst_w;
 wire [9:0] read_data_w;
 wire write_ready_w;
 wire read_data_valid_w;
+wire read_ready_w;
 //wire read_ready_w;
 
 clock_gen #(.CLOCK_PERIOD(1000)) clock_gen_p_clk_0 (.clock_i(p_clk_w));
@@ -30,6 +31,7 @@ test_bench test_bench_0(
 	.p_clk_i(p_clk_w),
 	.tx_sclk_i(tx_sclk_w),
 	.rx_sclk_i(rx_sclk_w),
+	.read_ready_o(read_ready_w),
 	//.rx_srst_n_o(rx_srst_n_w),
 	//.prst_n_o(prst_n_w),
 	//.tx_srst_n_o(tx_srst_n_w)
@@ -68,7 +70,7 @@ async_fifo #(.FIFO_WIDTH(10),.FIFO_DEPTH(128),.ADDR_WIDTH(7)) asycn_fifo_0 ( //c
   .read_reset_n_i(master_rst_w),       // Reset in the read clock domain: active low, synchronous
   .read_data_o(read_data_w), // Data to downstream logic [FIFO_WIDTH-1:0]
   .read_data_valid_o(read_data_valid_w),    // Valid for read data
-  .read_ready_i(1'b1) //read_ready_w
+  .read_ready_i(read_ready_w) //read_ready_w
 );   
 
 endmodule
