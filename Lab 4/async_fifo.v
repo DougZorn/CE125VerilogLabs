@@ -70,7 +70,7 @@ module async_fifo #
    always @(posedge write_clock_i)
      if (~write_reset_n_i)
        write_ptr <= {(ADDR_WIDTH+1){1'b0}};
-     else if (~fifo_full)
+     else if (~fifo_full & write_data_valid_i)
        write_ptr <= write_ptr + {{ADDR_WIDTH{1'b0}}, 1'b1};
 
   // Write into RAM 

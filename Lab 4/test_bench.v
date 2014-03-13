@@ -15,6 +15,7 @@ module test_bench(
 initial
 	begin
 		tx_pdata_valid_o = 1'b0; //initial values
+		read_ready_o = 1'b0;
 
 		master_rst_o = 1'b1;
 		@(negedge p_clk_i);
@@ -74,7 +75,7 @@ initial
 		repeat(11)@(posedge p_clk_i);
 		read_ready_o = 1'b1;
 	 	repeat(2)@(posedge p_clk_i);
-		//read_ready_o = 1'b0;
+		read_ready_o = 1'b0;
 
 
 		
