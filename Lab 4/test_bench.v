@@ -45,9 +45,7 @@ initial
 		rx_srst_n_o = 1'b1;
 		*/
 		
-		repeat (2) @(posedge p_clk_i);
-		
-		
+		@(posedge p_clk_i);		
 		
 		@(negedge p_clk_i);
 		tx_pdata_o = 8'd197;

@@ -29,12 +29,12 @@ module uart_rx(
 		  //wdata_o = 9'd0;	
       next_state = 5'b0_0000; 
       case(1'b1) // synthesis parallel_case
-        state[idle]:if(rx_data_i == 0) next_state[initial_wait] = 1'b1;
-									  else
-											begin
-												next_state[idle] = 1'b1;
-												wdata_o = 9'd0;
-											end
+        state[idle]: begin
+										 wdata_o = 9'd0;									
+										 if(rx_data_i == 0) next_state[initial_wait] = 1'b1;
+									   	else
+												next_state[idle] = 1'b1;												
+										 end
 				state[initial_wait]:if(sample_counter == count_10) next_state[sample] = 1'b1;
 														else next_state[initial_wait] = 1'b1;
 				state[sample]: next_state[wait_to_sample] = 1'b1;
