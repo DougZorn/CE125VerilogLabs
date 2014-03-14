@@ -1,0 +1,3 @@
+NET "CLK_IN1" LOC = "L15" ;
+NET "RESET" LOC = "T15" ;
+NET "LOCKED" LOC = "U18" ;
